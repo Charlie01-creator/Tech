@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nexora Tech — Engineering Tomorrow's Technology</title>
+<meta name="description" content="Nexora Tech builds modern websites, software, and AI-powered products for businesses that want to move faster.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #060a14;
+    --bg-2: #0a1120;
+    --panel: #0d1526;
+    --panel-2: #101b31;
+    --border: rgba(140, 190, 255, 0.12);
+    --border-hover: rgba(94, 219, 255, 0.35);
+    --text: #eef3fb;
+    --text-dim: #9fb0c9;
+    --text-faint: #5f7192;
+    --cyan: #4fd8ff;
+    --blue: #3d7bff;
+    --cyan-dim: rgba(79, 216, 255, 0.14);
+    --glow: 0 0 40px rgba(79, 216, 255, 0.25);
+    --radius: 16px;
+    --maxw: 1180px;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,h2,h3,h4{ font-family: 'Space Grotesk', 'Inter', sans-serif; letter-spacing: -0.01em; }
+  .mono{ font-family: 'JetBrains Mono', monospace; }
+
+  a{ color: inherit; text-decoration: none; }
+  img{ max-width:100%; display:block; }
+  section{ position: relative; }
+  .wrap{ max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+  ::selection{ background: var(--cyan); color: #051018; }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+    outline: 2px solid var(--cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* ---------- background lattice (signature motif) ---------- */
+  .lattice-bg{
+    position: absolute; inset: 0; z-index: 0; pointer-events: none;
+    opacity: 0.55;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(6, 10, 20, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    transition: border-color .3s ease;
+  }
+  .nav-inner{
+    max-width: var(--maxw); margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo{
+    display: flex; align-items: center; gap: 10px;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: -0.02em;
+  }
+  .logo-mark{
+    width: 30px; height: 30px; position: relative; flex-shrink: 0;
+  }
+  .logo-mark svg{ width: 100%; height: 100%; }
+  nav.links{ display: flex; gap: 32px; align-items: center; }
+  nav.links a{
+    font-size: 0.92rem; color: var(--text-dim); font-weight: 500;
+    transition: color .2s ease;
+    position: relative;
+  }
+  nav.links a:hover{ color: var(--text); }
+  nav.links a::after{
+    content:''; position: absolute; left:0; bottom: -6px; height: 1px; width: 0;
+    background: var(--cyan); transition: width .25s ease;
+  }
+  nav.links a:hover::after{ width: 100%; }
+
+  .btn{
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    padding: 12px 24px; border-radius: 999px; font-weight: 600; font-size: 0.92rem;
+    cursor: pointer; border: 1px solid transparent; transition: all .25s ease;
+    white-space: nowrap;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    color: #041019;
+    box-shadow: 0 0 0 0 rgba(79,216,255,0);
+  }
+  .btn-primary:hover{ box-shadow: 0 8px 30px rgba(79,216,255,0.35); transform: translateY(-1px); }
+  .btn-ghost{
+    background: transparent; border: 1px solid var(--border); color: var(--text);
+  }
+  .btn-ghost:hover{ border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
+  .btn-small{ padding: 9px 18px; font-size: 0.85rem; }
+
+  .nav-cta{ display: flex; align-items: center; gap: 14px; }
+
+  .menu-toggle{
+    display: none; background: none; border: none; color: var(--text); cursor: pointer;
+    width: 40px; height: 40px; align-items: center; justify-content: center;
+  }
+  .menu-toggle svg{ width: 22px; height: 22px; }
+
+  .mobile-panel{
+    display: none;
+    position: fixed; top: 65px; left: 0; right: 0; z-index: 99;
+    background: rgba(8,12,22,0.98); border-bottom: 1px solid var(--border);
+    padding: 20px 24px 28px;
+    flex-direction: column; gap: 18px;
+  }
+  .mobile-panel.open{ display: flex; }
+  .mobile-panel a{ font-size: 1rem; color: var(--text-dim); font-weight: 500; }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 168px 0 120px;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-glow{
+    position: absolute; width: 900px; height: 900px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,216,255,0.16) 0%, rgba(61,123,255,0.06) 40%, transparent 70%);
+    top: -320px; left: 50%; transform: translateX(-50%);
+    pointer-events: none; z-index: 0;
+  }
+  .hero-content{ position: relative; z-index: 2; text-align: center; max-width: 880px; margin: 0 auto; }
+
+  .eyebrow{
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.06em;
+    color: var(--cyan); background: var(--cyan-dim); border: 1px solid rgba(79,216,255,0.25);
+    padding: 7px 16px; border-radius: 999px; margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .eyebrow .dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 8px var(--cyan); }
+
+  .hero h1{
+    font-size: clamp(2.4rem, 6vw, 4.4rem);
+    font-weight: 700; line-height: 1.06; letter-spacing: -0.03em;
+    margin-bottom: 26px;
+  }
+  .hero h1 .grad{
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 60%, #a78bfa 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p{
+    font-size: clamp(1rem, 2vw, 1.2rem); color: var(--text-dim); max-width: 620px; margin: 0 auto 40px;
+  }
+  .hero-ctas{ display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; margin-bottom: 72px; }
+
+  .hero-stats{
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    max-width: 640px; margin: 0 auto;
+    border-top: 1px solid var(--border); padding-top: 36px;
+  }
+  .stat-num{
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700;
+    font-size: clamp(1.5rem, 3vw, 2.1rem);
+    background: linear-gradient(135deg, #fff, var(--cyan));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .stat-label{ font-size: 0.82rem; color: var(--text-faint); margin-top: 4px; }
+
+  /* ---------- section shared ---------- */
+  .section{ padding: 120px 0; }
+  .section-alt{ background: var(--bg-2); }
+  .section-head{ max-width: 640px; margin-bottom: 64px; }
+  .section-head.center{ margin-left: auto; margin-right: auto; text-align: center; }
+  .kicker{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; display: block;
+  }
+  .section-head h2{
+    font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 600; margin-bottom: 16px; letter-spacing: -0.02em;
+  }
+  .section-head p{ color: var(--text-dim); font-size: 1.05rem; }
+
+  .reveal{ opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible{ opacity: 1; transform: translateY(0); }
+  .reveal-delay-1{ transition-delay: .08s; }
+  .reveal-delay-2{ transition-delay: .16s; }
+  .reveal-delay-3{ transition-delay: .24s; }
+  .reveal-delay-4{ transition-delay: .32s; }
+
+  /* ---------- about ---------- */
+  .about-grid{ display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 64px; align-items: start; }
+  .about-copy p{ color: var(--text-dim); margin-bottom: 20px; font-size: 1rem; }
+  .about-copy p:last-child{ margin-bottom: 0; }
+  .about-list{ display: flex; flex-direction: column; gap: 22px; }
+  .about-item{
+    display: flex; gap: 16px; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--panel); transition: border-color .3s ease, transform .3s ease;
+  }
+  .about-item:hover{ border-color: var(--border-hover); transform: translateX(4px); }
+  .about-icon{
+    width: 40px; height: 40px; border-radius: 10px; flex-shrink: 0;
+    background: var(--cyan-dim); display: flex; align-items: center; justify-content: center;
+    color: var(--cyan);
+  }
+  .about-item h4{ font-size: 0.98rem; margin-bottom: 4px; }
+  .about-item p{ font-size: 0.88rem; color: var(--text-faint); }
+
+  /* ---------- services ---------- */
+  .services-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .service-card{
+    background: linear-gradient(160deg, var(--panel), var(--panel-2));
+    border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 32px 28px; position: relative; overflow: hidden;
+    transition: transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+  .service-card::before{
+    content:''; position: absolute; top:0; left:0; right:0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .service-card:hover{
+    transform: translateY(-6px); border-color: var(--border-hover);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.35), 0 0 30px rgba(79,216,255,0.06);
+  }
+  .service-card:hover::before{ opacity: 1; }
+  .service-icon{
+    width: 48px; height: 48px; border-radius: 12px; margin-bottom: 22px;
+    background: var(--cyan-dim); display: flex; align-items: center; justify-content: center; color: var(--cyan);
+  }
+  .service-card h3{ font-size: 1.15rem; margin-bottom: 10px; }
+  .service-card p{ color: var(--text-dim); font-size: 0.9rem; margin-bottom: 18px; }
+  .service-tags{ display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--text-faint);
+    border: 1px solid var(--border); padding: 4px 10px; border-radius: 6px;
+  }
+
+  /* ---------- why choose us ---------- */
+  .why-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--border); border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border); }
+  .why-item{ background: var(--bg); padding: 36px 28px; transition: background .3s ease; }
+  .why-item:hover{ background: var(--panel); }
+  .why-icon{ color: var(--cyan); margin-bottom: 18px; }
+  .why-item h4{ font-size: 1.02rem; margin-bottom: 8px; }
+  .why-item p{ font-size: 0.88rem; color: var(--text-faint); }
+
+  /* ---------- portfolio ---------- */
+  .portfolio-grid{ display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
+  .project-card{
+    border-radius: var(--radius); overflow: hidden; border: 1px solid var(--border);
+    background: var(--panel); transition: transform .35s ease, border-color .35s ease;
+    cursor: pointer;
+  }
+  .project-card:hover{ transform: translateY(-6px); border-color: var(--border-hover); }
+  .project-thumb{
+    height: 220px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .project-thumb svg{ width: 100%; height: 100%; }
+  .project-body{ padding: 24px 26px 28px; }
+  .project-cat{ font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--cyan); text-transform: uppercase; letter-spacing: 0.05em; }
+  .project-body h3{ font-size: 1.1rem; margin: 8px 0 8px; }
+  .project-body p{ font-size: 0.88rem; color: var(--text-faint); }
+
+  /* ---------- tech stack ---------- */
+  .tech-groups{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .tech-group{
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 26px 22px; background: var(--panel);
+  }
+  .tech-group h4{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--text-faint); margin-bottom: 18px;
+  }
+  .tech-pill-list{ display: flex; flex-direction: column; gap: 10px; }
+  .tech-pill{
+    display: flex; align-items: center; gap: 10px; font-size: 0.92rem; color: var(--text);
+    padding: 8px 0;
+  }
+  .tech-pill .pip{ width: 6px; height: 6px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
+
+  /* ---------- process ---------- */
+  .process-track{ position: relative; }
+  .process-track::before{
+    content:''; position: absolute; top: 26px; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border) 10%, var(--border) 90%, transparent);
+  }
+  .process-grid{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; position: relative; }
+  .process-step{ position: relative; }
+  .process-num{
+    font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: var(--cyan);
+    width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--border-hover);
+    background: var(--bg-2); display: flex; align-items: center; justify-content: center;
+    margin-bottom: 22px; position: relative; z-index: 1;
+  }
+  .process-step h4{ font-size: 1.05rem; margin-bottom: 8px; }
+  .process-step p{ font-size: 0.88rem; color: var(--text-faint); }
+
+  /* ---------- testimonials ---------- */
+  .testi-grid{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .testi-card{
+    border: 1px solid var(--border); border-radius: var(--radius); padding: 30px 26px; background: var(--panel);
+  }
+  .testi-quote{ font-size: 0.95rem; color: var(--text); margin-bottom: 24px; line-height: 1.7; }
+  .testi-person{ display: flex; align-items: center; gap: 12px; }
+  .testi-avatar{
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--cyan), var(--blue));
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem; color: #041019;
+  }
+  .testi-name{ font-size: 0.9rem; font-weight: 600; }
+  .testi-role{ font-size: 0.78rem; color: var(--text-faint); }
+
+  /* ---------- contact ---------- */
+  .contact-grid{ display: grid; grid-template-columns: 0.9fr 1.1fr; gap: 64px; }
+  .contact-info h2{ font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 18px; }
+  .contact-info p{ color: var(--text-dim); margin-bottom: 32px; }
+  .contact-detail{ display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+  .contact-detail .about-icon{ width: 36px; height: 36px; }
+  .contact-detail span{ font-size: 0.92rem; color: var(--text-dim); }
+  .social-row{ display: flex; gap: 12px; margin-top: 32px; }
+  .social-row a{
+    width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; color: var(--text-dim);
+    transition: all .25s ease;
+  }
+  .social-row a:hover{ border-color: var(--border-hover); color: var(--cyan); transform: translateY(-2px); }
+
+  .form-card{
+    background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 36px;
+  }
+  .form-row{ display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 18px; }
+  .field{ display: flex; flex-direction: column; gap: 8px; }
+  .field label{ font-size: 0.82rem; color: var(--text-dim); font-weight: 500; }
+  .field input, .field select, .field textarea{
+    background: var(--bg-2); border: 1px solid var(--border); border-radius: 10px;
+    padding: 12px 14px; color: var(--text); font-family: inherit; font-size: 0.92rem;
+    transition: border-color .2s ease;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus{ border-color: var(--cyan); outline: none; }
+  .field textarea{ resize: vertical; min-height: 110px; }
+  .form-card .btn-primary{ width: 100%; margin-top: 6px; padding: 14px; }
+  .form-note{ font-size: 0.78rem; color: var(--text-faint); margin-top: 14px; text-align: center; }
+
+  /* ---------- footer ---------- */
+  footer{ border-top: 1px solid var(--border); padding: 64px 0 32px; }
+  .footer-grid{ display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+  .footer-brand p{ color: var(--text-faint); font-size: 0.88rem; margin-top: 14px; max-width: 280px; }
+  .footer-col h5{ font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-faint); margin-bottom: 18px; font-family: 'JetBrains Mono', monospace; }
+  .footer-col a{ display: block; font-size: 0.9rem; color: var(--text-dim); margin-bottom: 12px; transition: color .2s ease; }
+  .footer-col a:hover{ color: var(--cyan); }
+  .footer-bottom{
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;
+    border-top: 1px solid var(--border); padding-top: 28px;
+    font-size: 0.82rem; color: var(--text-faint);
+  }
+
+  /* ---------- theme toggle ---------- */
+  .theme-toggle{
+    width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; transition: all .2s ease;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover{ border-color: var(--border-hover); color: var(--cyan); }
+  .theme-toggle svg{ width: 18px; height: 18px; }
+
+  body.light{
+    --bg: #f6f8fc;
+    --bg-2: #eef1f8;
+    --panel: #ffffff;
+    --panel-2: #f7f9fd;
+    --border: rgba(30, 60, 110, 0.12);
+    --border-hover: rgba(61, 123, 255, 0.4);
+    --text: #0a1120;
+    --text-dim: #445271;
+    --text-faint: #6b7a99;
+  }
+  body.light .stat-num{ background: linear-gradient(135deg, #0a1120, var(--blue)); -webkit-background-clip: text; background-clip: text; }
+  body.light header{ background: rgba(246, 248, 252, 0.82); }
+  body.light .mobile-panel{ background: rgba(246,248,252,0.98); }
+
+  /* ---------- loader ---------- */
+  #loader{
+    position: fixed; inset: 0; z-index: 999; background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity .6s ease, visibility .6s ease;
+  }
+  #loader.hidden{ opacity: 0; visibility: hidden; }
+  .loader-mark{ width: 64px; height: 64px; animation: pulse 1.4s ease-in-out infinite; }
+  @keyframes pulse{ 0%,100%{ transform: scale(1); opacity: 1; } 50%{ transform: scale(1.08); opacity: 0.7; } }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 900px){
+    nav.links{ display: none; }
+    .menu-toggle{ display: flex; }
+    .about-grid, .contact-grid{ grid-template-columns: 1fr; gap: 40px; }
+    .services-grid{ grid-template-columns: repeat(2, 1fr); }
+    .why-grid{ grid-template-columns: repeat(2, 1fr); }
+    .portfolio-grid{ grid-template-columns: 1fr; }
+    .tech-groups{ grid-template-columns: repeat(2, 1fr); }
+    .process-grid{ grid-template-columns: repeat(2, 1fr); }
+    .process-track::before{ display: none; }
+    .testi-grid{ grid-template-columns: 1fr; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; }
+    .hero-stats{ grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .form-row{ grid-template-columns: 1fr; }
+  }
+  @media (max-width: 560px){
+    .services-grid, .why-grid, .tech-groups, .process-grid{ grid-template-columns: 1fr; }
+    .footer-grid{ grid-template-columns: 1fr; gap: 32px; }
+    .hero{ padding: 140px 0 80px; }
+    .section{ padding: 80px 0; }
+    .nav-cta .btn-ghost{ display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div id="loader">
+  <svg class="loader-mark" viewBox="0 0 48 48" fill="none">
+    <circle cx="24" cy="24" r="4" fill="#4fd8ff"/>
+    <circle cx="8" cy="12" r="2.5" fill="#4fd8ff" opacity="0.7"/>
+    <circle cx="40" cy="12" r="2.5" fill="#4fd8ff" opacity="0.7"/>
+    <circle cx="8" cy="36" r="2.5" fill="#4fd8ff" opacity="0.7"/>
+    <circle cx="40" cy="36" r="2.5" fill="#4fd8ff" opacity="0.7"/>
+    <line x1="24" y1="24" x2="8" y2="12" stroke="#4fd8ff" stroke-width="1" opacity="0.5"/>
+    <line x1="24" y1="24" x2="40" y2="12" stroke="#4fd8ff" stroke-width="1" opacity="0.5"/>
+    <line x1="24" y1="24" x2="8" y2="36" stroke="#4fd8ff" stroke-width="1" opacity="0.5"/>
+    <line x1="24" y1="24" x2="40" y2="36" stroke="#4fd8ff" stroke-width="1" opacity="0.5"/>
+  </svg>
+</div>
+
+<header>
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 32 32" fill="none">
+          <path d="M4 26V6h4l16 14V6h4v20h-4L12 12v14H4z" fill="url(#navGrad)"/>
+          <defs>
+            <linearGradient id="navGrad" x1="4" y1="6" x2="28" y2="26">
+              <stop offset="0" stop-color="#4fd8ff"/>
+              <stop offset="1" stop-color="#3d7bff"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </span>
+      Nexora Tech
+    </a>
+    <nav class="links">
+      <a href="#about">About</a>
+      <a href="#services">Services</a>
+      <a href="#work">Work</a>
+      <a href="#stack">Stack</a>
+      <a href="#process">Process</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="nav-cta">
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle light and dark theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
+        </svg>
+      </button>
+      <a href="#contact" class="btn btn-ghost btn-small" style="display:none" id="navCtaDesktop">Start a project</a>
+      <a href="#contact" class="btn btn-primary btn-small">Start a project</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="#about">About</a>
+    <a href="#services">Services</a>
+    <a href="#work">Work</a>
+    <a href="#stack">Stack</a>
+    <a href="#process">Process</a>
+    <a href="#contact">Contact</a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="latticeCanvas" class="lattice-bg"></canvas>
+    <div class="hero-glow"></div>
+    <div class="wrap hero-content">
+      <span class="eyebrow"><span class="dot"></span>Building from Lagos to the world</span>
+      <h1>Building Digital Experiences <span class="grad">For The Future</span></h1>
+      <p>Nexora Tech designs and engineers websites, software, and AI-powered products for businesses that refuse to look like everyone else. Premium execution, senior engineering, shipped fast.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn btn-primary">Start Your Project</a>
+        <a href="#work" class="btn btn-ghost">Explore Our Work</a>
+      </div>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num" data-count="50" data-suffix="+">0</div>
+          <div class="stat-label">Projects Delivered</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="99" data-suffix="%">0</div>
+          <div class="stat-label">Client Satisfaction</div>
+        </div>
+        <div>
+          <div class="stat-num" data-count="24" data-suffix="/7">0</div>
+          <div class="stat-label">Support Coverage</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="reveal">
+          <span class="kicker">About Nexora Tech</span>
+          <h2>A technology partner built for the next decade, not the last one</h2>
+          <div class="about-copy">
+            <p>Nexora Tech was founded on a simple premise: technology companies serving global clients shouldn't be limited by geography, and technology built in emerging markets can meet — and exceed — the bar set by the biggest agencies in the world.</p>
+            <p>We work with founders, operators, and enterprise teams who need software that performs under real load, interfaces that feel considered rather than assembled, and AI features that solve an actual problem instead of decorating a landing page.</p>
+            <p>Every engagement starts with the same question: what does this business need to be true in twelve months, and what do we need to build today to get there?</p>
+          </div>
+        </div>
+        <div class="about-list reveal reveal-delay-2">
+          <div class="about-item">
+            <div class="about-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+            <div><h4>Our mission</h4><p>Give ambitious businesses technology that competes globally from day one.</p></div>
+          </div>
+          <div class="about-item">
+            <div class="about-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg></div>
+            <div><h4>Our vision</h4><p>Become the technology partner of choice for companies scaling out of emerging markets.</p></div>
+          </div>
+          <div class="about-item">
+            <div class="about-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></svg></div>
+            <div><h4>Why businesses choose us</h4><p>Senior engineers on every project, transparent process, and a portfolio that speaks for itself.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section section-alt" id="services">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">Services</span>
+        <h2>Everything you need to compete online</h2>
+        <p>From a single landing page to a full product build, we cover the entire stack a modern business needs.</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 22h8M12 18v4"/></svg></div>
+          <h3>Website Development</h3>
+          <p>Modern, responsive websites, business sites, e-commerce platforms, and full web applications built to convert.</p>
+          <div class="service-tags"><span class="tag">Responsive</span><span class="tag">E-commerce</span><span class="tag">Web apps</span></div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+          <h3>Software Development</h3>
+          <p>Custom software, SaaS platforms, and enterprise systems engineered for reliability at scale.</p>
+          <div class="service-tags"><span class="tag">Custom builds</span><span class="tag">SaaS</span><span class="tag">Enterprise</span></div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a5 5 0 0 0-5 5v2a5 5 0 0 0 10 0V7a5 5 0 0 0-5-5z"/><path d="M8 14v2a4 4 0 0 0 8 0v-2M12 20v2"/></svg></div>
+          <h3>AI Solutions</h3>
+          <p>AI automation, intelligent applications, and integrations that turn your data into real decisions.</p>
+          <div class="service-tags"><span class="tag">Automation</span><span class="tag">LLM integration</span><span class="tag">ML tooling</span></div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-1">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg></div>
+          <h3>UI/UX Design</h3>
+          <p>User-centered interface and product design grounded in research, not just aesthetics.</p>
+          <div class="service-tags"><span class="tag">Product design</span><span class="tag">Prototyping</span><span class="tag">Design systems</span></div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-2">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m7 15 4-6 4 3 5-8"/></svg></div>
+          <h3>Digital Transformation</h3>
+          <p>Helping businesses move core operations online with the right architecture from the start.</p>
+          <div class="service-tags"><span class="tag">Migration</span><span class="tag">Strategy</span><span class="tag">Consulting</span></div>
+        </div>
+
+        <div class="service-card reveal reveal-delay-3">
+          <div class="service-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg></div>
+          <h3>Ongoing Support</h3>
+          <p>Performance monitoring, security patches, and iteration after launch — not just a handoff.</p>
+          <div class="service-tags"><span class="tag">Monitoring</span><span class="tag">Security</span><span class="tag">Iteration</span></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="section" id="why">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">Why Nexora</span>
+        <h2>Built to a higher standard, by default</h2>
+      </div>
+      <div class="why-grid reveal reveal-delay-1">
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+          <h4>Cutting-edge technology</h4>
+          <p>We build with the same tools used by the best product teams in the world, not last decade's stack.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg></div>
+          <h4>Mobile-first development</h4>
+          <p>Every interface is designed for the smallest screen first, then scaled up — never the reverse.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 3 14h7l-1 8 10-12h-7l1-8z"/></svg></div>
+          <h4>High performance</h4>
+          <p>Fast load times and smooth interactions aren't an afterthought — they're a build requirement.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6l-8-4z"/></svg></div>
+          <h4>Security focused</h4>
+          <p>Authentication, data handling, and infrastructure are reviewed against real threat models, not assumptions.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3 8 4-16 3 8h4"/></svg></div>
+          <h4>Scalable solutions</h4>
+          <p>Architecture decisions account for growth so you're not rebuilding six months after launch.</p>
+        </div>
+        <div class="why-item">
+          <div class="why-icon"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 6.3l-1.7-1.7a5 5 0 1 0-7.1 7.1L12 20.4l8.8-8.7a5 5 0 0 0 0-7.1z"/></svg></div>
+          <h4>Customer-focused approach</h4>
+          <p>You get a direct line to the people building your product, not a rotating account manager.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="section section-alt" id="work">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">Selected Work</span>
+        <h2>Recent projects</h2>
+        <p>A sample of the products, platforms, and experiences we've shipped.</p>
+      </div>
+      <div class="portfolio-grid">
+
+        <div class="project-card reveal reveal-delay-1">
+          <div class="project-thumb" style="background:linear-gradient(135deg,#0d1b33,#123049)">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <rect width="400" height="220" fill="none"/>
+              <rect x="30" y="30" width="150" height="10" rx="5" fill="#4fd8ff" opacity="0.8"/>
+              <rect x="30" y="52" width="220" height="8" rx="4" fill="#3d7bff" opacity="0.5"/>
+              <rect x="30" y="90" width="100" height="70" rx="8" fill="#0f2540" stroke="#4fd8ff" stroke-opacity="0.3"/>
+              <rect x="145" y="90" width="100" height="70" rx="8" fill="#0f2540" stroke="#4fd8ff" stroke-opacity="0.3"/>
+              <rect x="260" y="90" width="100" height="70" rx="8" fill="#0f2540" stroke="#4fd8ff" stroke-opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="project-body">
+            <span class="project-cat">Business Website</span>
+            <h3>Meridian Capital — corporate site</h3>
+            <p>A financial services rebrand with a full corporate site, investor portal, and CMS handoff.</p>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-2">
+          <div class="project-thumb" style="background:linear-gradient(135deg,#141033,#221a4a)">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="90" cy="70" r="34" fill="#3d7bff" opacity="0.35"/>
+              <rect x="140" y="46" width="230" height="20" rx="6" fill="#4fd8ff" opacity="0.7"/>
+              <rect x="140" y="76" width="160" height="10" rx="5" fill="#7b8bb5" opacity="0.5"/>
+              <rect x="30" y="130" width="90" height="60" rx="8" fill="#1c1444" stroke="#a78bfa" stroke-opacity="0.4"/>
+              <rect x="132" y="130" width="90" height="60" rx="8" fill="#1c1444" stroke="#a78bfa" stroke-opacity="0.4"/>
+              <rect x="234" y="130" width="90" height="60" rx="8" fill="#1c1444" stroke="#a78bfa" stroke-opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="project-body">
+            <span class="project-cat">E-commerce Platform</span>
+            <h3>Adire & Co — retail marketplace</h3>
+            <p>A multi-vendor commerce platform handling checkout, inventory, and vendor payouts at scale.</p>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-3">
+          <div class="project-thumb" style="background:linear-gradient(135deg,#0d2b1e,#123e2c)">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="30" width="340" height="50" rx="10" fill="#0f2f22" stroke="#4fd8ff" stroke-opacity="0.4"/>
+              <rect x="46" y="46" width="140" height="10" rx="5" fill="#4fd8ff" opacity="0.7"/>
+              <rect x="30" y="96" width="160" height="94" rx="10" fill="#0f2f22" stroke="#4fd8ff" stroke-opacity="0.3"/>
+              <rect x="210" y="96" width="160" height="94" rx="10" fill="#0f2f22" stroke="#4fd8ff" stroke-opacity="0.3"/>
+              <circle cx="70" cy="130" r="12" fill="#3d7bff" opacity="0.6"/>
+              <circle cx="250" cy="130" r="12" fill="#3d7bff" opacity="0.6"/>
+            </svg>
+          </div>
+          <div class="project-body">
+            <span class="project-cat">Education Platform</span>
+            <h3>Learnspace — cohort learning</h3>
+            <p>A cohort-based learning platform with live sessions, progress tracking, and certification.</p>
+          </div>
+        </div>
+
+        <div class="project-card reveal reveal-delay-4">
+          <div class="project-thumb" style="background:linear-gradient(135deg,#241428,#37173f)">
+            <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="90" r="46" fill="none" stroke="#4fd8ff" stroke-width="1.5" opacity="0.7"/>
+              <circle cx="200" cy="90" r="30" fill="none" stroke="#a78bfa" stroke-width="1.5" opacity="0.6"/>
+              <circle cx="200" cy="90" r="6" fill="#4fd8ff"/>
+              <rect x="60" y="160" width="280" height="14" rx="7" fill="#2a1533" stroke="#4fd8ff" stroke-opacity="0.3"/>
+            </svg>
+          </div>
+          <div class="project-body">
+            <span class="project-cat">AI Application</span>
+            <h3>Sentry AI — support triage engine</h3>
+            <p>An AI-powered ticket triage system that cut first-response time by more than 60%.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- TECH STACK -->
+  <section class="section" id="stack">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">Technology</span>
+        <h2>The stack behind the work</h2>
+        <p>Proven, modern tools chosen for performance and long-term maintainability.</p>
+      </div>
+      <div class="tech-groups reveal reveal-delay-1">
+        <div class="tech-group">
+          <h4>Frontend</h4>
+          <div class="tech-pill-list">
+            <div class="tech-pill"><span class="pip"></span>React</div>
+            <div class="tech-pill"><span class="pip"></span>Next.js</div>
+            <div class="tech-pill"><span class="pip"></span>TypeScript</div>
+            <div class="tech-pill"><span class="pip"></span>Tailwind CSS</div>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h4>Backend</h4>
+          <div class="tech-pill-list">
+            <div class="tech-pill"><span class="pip"></span>Node.js</div>
+            <div class="tech-pill"><span class="pip"></span>Express</div>
+            <div class="tech-pill"><span class="pip"></span>PostgreSQL</div>
+            <div class="tech-pill"><span class="pip"></span>Prisma</div>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h4>Cloud</h4>
+          <div class="tech-pill-list">
+            <div class="tech-pill"><span class="pip"></span>Vercel</div>
+            <div class="tech-pill"><span class="pip"></span>AWS</div>
+            <div class="tech-pill"><span class="pip"></span>Docker</div>
+          </div>
+        </div>
+        <div class="tech-group">
+          <h4>AI</h4>
+          <div class="tech-pill-list">
+            <div class="tech-pill"><span class="pip"></span>OpenAI APIs</div>
+            <div class="tech-pill"><span class="pip"></span>ML tooling</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section section-alt" id="process">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">How We Work</span>
+        <h2>A process built for momentum</h2>
+        <p>Four stages, no surprises. You always know what phase your project is in.</p>
+      </div>
+      <div class="process-track reveal reveal-delay-1">
+        <div class="process-grid">
+          <div class="process-step">
+            <div class="process-num">01</div>
+            <h4>Discover</h4>
+            <p>We map your goals, constraints, and users before a single line of design or code.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">02</div>
+            <h4>Design</h4>
+            <p>Wireframes and high-fidelity design, refined with you until it feels exactly right.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">03</div>
+            <h4>Develop</h4>
+            <p>Senior engineers build on a tested, documented, production-ready foundation.</p>
+          </div>
+          <div class="process-step">
+            <div class="process-num">04</div>
+            <h4>Launch</h4>
+            <p>We deploy, monitor, and optimize based on how real users actually behave.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="testimonials">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <span class="kicker">Client Feedback</span>
+        <h2>What businesses say about working with us</h2>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal reveal-delay-1">
+          <p class="testi-quote">"Nexora rebuilt our platform in ten weeks and it hasn't gone down once since launch. The communication throughout was better than agencies twice their size."</p>
+          <div class="testi-person">
+            <div class="testi-avatar">AK</div>
+            <div><div class="testi-name">Amara Kalu</div><div class="testi-role">COO, Meridian Capital</div></div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-2">
+          <p class="testi-quote">"We came in wanting a simple website and left with a full commerce platform that actually scales. Their engineering judgment saved us months."</p>
+          <div class="testi-person">
+            <div class="testi-avatar">TO</div>
+            <div><div class="testi-name">Tunde Oyelaran</div><div class="testi-role">Founder, Adire & Co</div></div>
+          </div>
+        </div>
+        <div class="testi-card reveal reveal-delay-3">
+          <p class="testi-quote">"The AI triage tool they built now handles a majority of our first-line support volume. It paid for itself within the first quarter."</p>
+          <div class="testi-person">
+            <div class="testi-avatar">SN</div>
+            <div><div class="testi-name">Sade Nwachukwu</div><div class="testi-role">Head of Support, Sentry AI</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section section-alt" id="contact">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <span class="kicker">Get In Touch</span>
+          <h2>Let's Build Something Extraordinary</h2>
+          <p>Tell us about your project and we'll come back to you within one business day with next steps.</p>
+          <div class="contact-detail">
+            <span class="about-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="m3 6 9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg></span>
+            <span>hello@nexoratech.io</span>
+          </div>
+          <div class="contact-detail">
+            <span class="about-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.7a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.1z"/></svg></span>
+            <span>+234 1 234 5678</span>
+          </div>
+          <div class="contact-detail">
+            <span class="about-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span>Lagos, Nigeria — remote-first, global clients</span>
+          </div>
+          <div class="social-row">
+            <a href="#" aria-label="X / Twitter"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.9 2H22l-7.6 8.7L23.3 22H16.6l-5.2-6.8L5.4 22H2.3l8.1-9.3L1.7 2h6.9l4.7 6.2L18.9 2z"/></svg></a>
+            <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9h4v12H3zM9 9h3.8v1.7h.1c.5-1 1.8-2 3.7-2 4 0 4.7 2.6 4.7 6V21h-4v-5.3c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V21H9z"/></svg></a>
+            <a href="#" aria-label="GitHub"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.1-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5a3.9 3.9 0 0 1 1-2.7c-.1-.2-.5-1.3.1-2.8 0 0 .9-.3 2.9 1a10 10 0 0 1 5.2 0c2-1.3 2.9-1 2.9-1 .6 1.5.2 2.6.1 2.8a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.8-4.6 5 .3.3.6.9.6 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg></a>
+          </div>
+        </div>
+
+        <form class="form-card reveal reveal-delay-2" id="contactForm">
+          <div class="form-row">
+            <div class="field"><label for="name">Name</label><input id="name" type="text" placeholder="Your full name" required></div>
+            <div class="field"><label for="email">Email</label><input id="email" type="email" placeholder="you@company.com" required></div>
+          </div>
+          <div class="form-row">
+            <div class="field"><label for="company">Company</label><input id="company" type="text" placeholder="Company name"></div>
+            <div class="field">
+              <label for="project">Project type</label>
+              <select id="project">
+                <option>Website</option>
+                <option>Software / SaaS</option>
+                <option>AI solution</option>
+                <option>UI/UX design</option>
+                <option>Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="field" style="margin-bottom: 22px;">
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Tell us a bit about what you're building..."></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">Send Message</button>
+          <p class="form-note">We reply within one business day. No spam, ever.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="#top" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 32 32" fill="none">
+              <path d="M4 26V6h4l16 14V6h4v20h-4L12 12v14H4z" fill="url(#footGrad)"/>
+              <defs><linearGradient id="footGrad" x1="4" y1="6" x2="28" y2="26"><stop offset="0" stop-color="#4fd8ff"/><stop offset="1" stop-color="#3d7bff"/></linearGradient></defs>
+            </svg>
+          </span>
+          Nexora Tech
+        </a>
+        <p>Engineering Tomorrow's Technology. Websites, software, and AI-powered products for businesses that want to move faster.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#services">Website Development</a>
+        <a href="#services">Software Development</a>
+        <a href="#services">AI Solutions</a>
+        <a href="#services">UI/UX Design</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <a href="#about">About</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:hello@nexoratech.io">hello@nexoratech.io</a>
+        <a href="tel:+2341234567">+234 1 234 5678</a>
+        <a href="#">Lagos, Nigeria</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nexora Tech. All rights reserved.</span>
+      <span>Engineering Tomorrow's Technology</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---- loader ----
+  window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('loader').classList.add('hidden'), 500);
+  });
+
+  // ---- mobile menu ----
+  const menuToggle = document.getElementById('menuToggle');
+  const mobilePanel = document.getElementById('mobilePanel');
+  menuToggle.addEventListener('click', () => {
+    const open = mobilePanel.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', open);
+  });
+  mobilePanel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    mobilePanel.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // ---- theme toggle ----
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light');
+    const isLight = document.body.classList.contains('light');
+    themeIcon.innerHTML = isLight
+      ? '<circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4.9" y1="4.9" x2="6.3" y2="6.3"/><line x1="17.7" y1="17.7" x2="19.1" y2="19.1"/><line x1="2" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22" y2="12"/><line x1="4.9" y1="19.1" x2="6.3" y2="17.7"/><line x1="17.7" y1="6.3" x2="19.1" y2="4.9"/>'
+      : '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>';
+  });
+
+  // ---- scroll reveal ----
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const revealEls = document.querySelectorAll('.reveal');
+  if (reduceMotion) {
+    revealEls.forEach(el => el.classList.add('visible'));
+  } else {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(el => io.observe(el));
+  }
+
+  // ---- animated counters ----
+  const counters = document.querySelectorAll('.stat-num');
+  const counterIO = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = parseInt(el.dataset.count, 10);
+      const suffix = el.dataset.suffix || '';
+      if (reduceMotion) { el.textContent = target + suffix; counterIO.unobserve(el); return; }
+      let current = 0;
+      const duration = 1400;
+      const start = performance.now();
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        current = Math.floor(progress * target);
+        el.textContent = current + suffix;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = target + suffix;
+      }
+      requestAnimationFrame(tick);
+      counterIO.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => counterIO.observe(c));
+
+  // ---- header border on scroll ----
+  const header = document.querySelector('header');
+  window.addEventListener('scroll', () => {
+    header.style.borderBottomColor = window.scrollY > 20 ? 'var(--border-hover)' : 'var(--border)';
+  });
+
+  // ---- contact form (demo only, no backend) ----
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const original = btn.textContent;
+    btn.textContent = 'Message sent ✓';
+    btn.style.opacity = '0.8';
+    setTimeout(() => { btn.textContent = original; btn.style.opacity = '1'; e.target.reset(); }, 2200);
+  });
+
+  // ---- lattice / network canvas background (signature element) ----
+  (function() {
+    const canvas = document.getElementById('latticeCanvas');
+    const ctx = canvas.getContext('2d');
+    let w, h, nodes = [];
+
+    function resize() {
+      w = canvas.width = canvas.offsetWidth;
+      h = canvas.height = canvas.offsetHeight;
+      const count = Math.min(60, Math.floor((w * h) / 22000));
+      nodes = Array.from({ length: count }, () => ({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        vx: (Math.random() - 0.5) * 0.18,
+        vy: (Math.random() - 0.5) * 0.18,
+        r: Math.random() * 1.6 + 0.8
+      }));
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.x += n.vx; n.y += n.vy;
+        if (n.x < 0 || n.x > w) n.vx *= -1;
+        if (n.y < 0 || n.y > h) n.vy *= -1;
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const m = nodes[j];
+          const dx = n.x - m.x, dy = n.y - m.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 140) {
+            ctx.strokeStyle = `rgba(79, 216, 255, ${0.14 * (1 - dist / 140)})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(n.x, n.y);
+            ctx.lineTo(m.x, m.y);
+            ctx.stroke();
+          }
+        }
+      }
+      for (const n of nodes) {
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(79, 216, 255, 0.55)';
+        ctx.fill();
+      }
+      if (!reduceMotion) requestAnimationFrame(draw);
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    draw();
+  })();
+</script>
+
+</body>
+</html>
